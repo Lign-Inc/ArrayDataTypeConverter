@@ -2,7 +2,6 @@
 ;	DataType Array Converter.
 ; *********************************************************************************
 ;	by Lign, 9th Sep 2021
-;		12th Sep 2021: Updating plan. Add duff device to accelerate speed.
 ;	https://github.com/FreakLign
 ; *********************************************************************************
 ;	Description:
@@ -17,26 +16,38 @@
 .Code
 	; Convert16s32f(short* origion, float* target, int dataLen)
 	Convert16s32f	proc
-
-
-		mov		r13,	r8
-		and		r13,	07h
-		
-		DuffHead:
-			
-			sub		r13,	1
-			jnz		DuffHead;
-
-		mov		r13,	r8
-		SHR		r13,	3h
-		jnz		Return
+		SHR		r8,		3h
 		convert:
+			vmovntdqa	xmm0,	xmmword ptr[rcx]
+			vpmovsxwd	ymm1,	xmm0
+			vcvtdq2ps	ymm2,	ymm1
+			vmovups		ymmword ptr [rdx], ymm2
+			lea			rcx,		[rcx + 10h]
+			lea			rdx,		[rdx + 20h]
 
-			sub		r13,		8h
-			jnz		convert
+			vmovntdqa	xmm0,	xmmword ptr[rcx]
+			vpmovsxwd	ymm1,	xmm0
+			vcvtdq2ps	ymm2,	ymm1
+			vmovups		ymmword ptr [rdx], ymm2
+			lea			rcx,		[rcx + 10h]
+			lea			rdx,		[rdx + 20h]
 
-		Return:
-			ret
+			vmovntdqa	xmm0,	xmmword ptr[rcx]
+			vpmovsxwd	ymm1,	xmm0
+			vcvtdq2ps	ymm2,	ymm1
+			vmovups		ymmword ptr [rdx], ymm2
+			lea			rcx,		[rcx + 10h]
+			lea			rdx,		[rdx + 20h]
+
+			vmovntdqa	xmm0,	xmmword ptr[rcx]
+			vpmovsxwd	ymm1,	xmm0
+			vcvtdq2ps	ymm2,	ymm1
+			vmovups		ymmword ptr [rdx], ymm2
+			lea			rcx,		[rcx + 10h]
+			lea			rdx,		[rdx + 20h]
+		sub		r8,		4
+		jnz		convert
+		ret
 	Convert16s32f	endp
 
 	; Convert32f16s(float* target, short* origion, int dataLen)
