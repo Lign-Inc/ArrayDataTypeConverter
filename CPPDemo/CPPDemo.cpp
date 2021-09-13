@@ -1,21 +1,30 @@
 #include <iostream>
 #include "DataTypeConverter.h"
+#pragma comment(lib, "ArrayDataTypeConverter.lib")
 #include <time.h>
 #include <immintrin.h>
 
 #define INTEST
+//#define DEBUGING
 
 int main()
 {
-	const int dataLen = 100'000;
+#ifndef  DEBUGING
+	const int dataLen = 65'397;
+#else
+	const int dataLen = 10;
+
+	auto v = Convert32f16s(dataLen);
+#endif
 	const int testTime = 100'000;
 	const int displayLen = 1000;
 
 	short* dataI = new short[dataLen];
 	//short* dataII = new short[dataLen];
-	_declspec(align(8)) short* dataII = new short[dataLen];
+	short* dataII = new short[dataLen];
 
 	std::cout << "Data preparing ...\n";
+
 	for (size_t i = 0; i < dataLen; i++)
 	{
 		dataI[i] = i % INT16_MAX;
@@ -27,6 +36,8 @@ int main()
 
 	clock_t t1 = clock();
 	//std::cout << "I Running ...\n";
+
+#ifndef  DEBUGING
 	for (size_t j = 0; j < testTime; j++)
 	{
 		for (size_t i = 0; i < dataLen; i++)
@@ -34,12 +45,14 @@ int main()
 			targetI[i] = dataI[i];
 		}
 	}
+#endif
 	//std::cout << "I Completed!\nII Running ...\n";
 	clock_t t2 = clock();
 	for (size_t j = 0; j < testTime; j++)
 	{
 #ifdef INTEST
-		Convert16s32f(dataII, targetII, dataLen);
+		auto v = Convert16s32f(dataII, targetII, dataLen);
+		int i = 0;
 #else
 		// 128 Bit divid 16 Bit = 8.
 		// Load data from memory to register.

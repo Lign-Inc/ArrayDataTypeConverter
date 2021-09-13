@@ -25,10 +25,12 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(filename).obj;%(outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ml64 /c %(filename).asm</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(filename).obj;%(outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ml64 /c %(filename).asm</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(filename).obj;%(outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ml64 /c %(filename).asm</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(filename).obj;%(outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ml64 /c %(filename).asm
+move %(filename).obj $(solutionDir)Lib\%(filename).obj</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(solutionDir)Lib\%(filename).obj;%(outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ml64 /c %(filename).asm
+move %(filename).obj $(solutionDir)Lib\%(filename).obj</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(solutionDir)Lib\%(filename).obj;%(outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -97,9 +99,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Lib\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)Lib\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
