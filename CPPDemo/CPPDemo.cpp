@@ -5,14 +5,14 @@
 #include <immintrin.h>
 
 #define INTEST
-//#define DEBUGING
+#define DEBUGING
 
 int main()
 {
 #ifndef  DEBUGING
 	const int dataLen = 65'397;
 #else
-	const int dataLen = 10;
+	const int dataLen = 123;
 
 	auto v = Convert32f16s(dataLen);
 #endif
