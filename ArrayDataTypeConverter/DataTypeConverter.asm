@@ -24,7 +24,6 @@
 		jz		__startDirect
 
 		and		r10,	07h
-		mov		r11,	r10
 		__overLength:
 			movsx		eax,				word ptr[rcx]
 			lea			rcx,				[rcx + 2h]
@@ -33,10 +32,6 @@
 			lea			rdx,				[rdx + 4h]
 			sub			r10,				1
 			jg			__overLength
-		ret
-		vpmovsxwd	ymm1,	xmm0
-		vcvtdq2ps	ymm2,	ymm1
-		vmovups		ymmword ptr [rdx], ymm2
 		mov		r10,	r9
 		and		r10,	78h
 		jz		__startDirect

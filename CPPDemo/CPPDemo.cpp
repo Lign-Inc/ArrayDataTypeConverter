@@ -12,7 +12,7 @@ int main()
 #ifndef  DEBUGING
 	const int dataLen = 65'397;
 #else
-	const int dataLen = 123;
+	const int dataLen = 301;
 
 	auto v = Convert32f16s(dataLen);
 #endif
